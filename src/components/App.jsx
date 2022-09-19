@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 export const App = () => {
   let [countries, setCountries] = useState([]);
+  let [namesCountry, setNamesCountry] = useState([]);
   useEffect(() => {
     const getCoutry = async () => {
       try {
@@ -11,28 +12,25 @@ export const App = () => {
           return contry;
         });
         setCountries(countriesAll);
+
+        if(countries.length > 0){
+        const allNamesCountry = countries.map(countryName => countryName.name.common)
+        setNamesCountry(allNamesCountry);
+        }
+        
       } catch (error) {
         console.log(error);
       }
     };
     getCoutry();
-  }, []);
-
-  console.log(countries);
+  }, [countries]);  
+  
   return (
     <>
-      {countries.length > 0 && (
+      {namesCountry.length > 0 && (
         <div>
-          {countries.map(country => (
-            <div style={{ display: 'inline-block' }}>
-              <img
-                key={country.name.common}
-                src={country.coatOfArms.png}
-                alt={country.name.common}
-                width={'300px'}
-              />
-              <p>{country.name.common}</p>
-            </div>
+          {namesCountry.sort().map(country => (  
+              <p key={country}>{country}</p>
           ))}
         </div>
       )}
